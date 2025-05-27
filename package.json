@@ -20,7 +20,9 @@
   "dependencies": {
     "globals": "^13.0.0",
     "hunspell-spellchecker": "^1.0.2",
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.15",
+    "synckit": "^0.11.6",
+    "write-good": "^1.0.8"
   },
   "devDependencies": {
     "chai": "^3.5.0",

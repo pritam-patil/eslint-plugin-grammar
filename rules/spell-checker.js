@@ -1,6 +1,18 @@
 // Native modules
 var fs = require('fs');
 var path = require('path');
+var writeGood = require('write-good');
+// var gramma = require('gramma');
+
+
+// runner.js
+var { createSyncFn } = require('synckit')
+
+// the worker path must be absolute
+const syncFn = createSyncFn(require.resolve('./worker'));
+
+// do whatever you want, you will get the result synchronously!
+// const result = syncFn()
 
 // 3rd party dependencies
 var lodash = require('lodash'),
@@ -163,6 +175,8 @@ module.exports = {
         }
 
         function isSpellingError(aWord) {
+            console.log(`>> checking ${aWord}`);
+            syncFn(aWord);
             return !options.skipWords.has(aWord) && !spell.check(aWord);
         }
 
