@@ -77,6 +77,10 @@ module.exports = {
                         type: 'boolean',
                         default: true
                     },
+                    sentences: {
+                        type: 'boolean',
+                        default: false
+                    },
                     identifiers: {
                         type: 'boolean',
                         default: true
@@ -142,6 +146,7 @@ module.exports = {
             langDir: defaultSettings.langDir,
             comments: true,
             strings: true,
+            sentences: false,
             identifiers: true,
             templates: true,
             skipWords: [],
@@ -175,9 +180,20 @@ module.exports = {
         }
 
         function isSpellingError(aWord) {
-            console.log(`>> checking ${aWord}`);
-            syncFn(aWord);
             return !options.skipWords.has(aWord) && !spell.check(aWord);
+        }
+
+        function checkGrammar(aNode, value, spellingType) {
+            const { status, suggestions } = syncFn(value);
+            if (suggestions.length > 0) {
+                context.report(
+                    aNode,
+                    'You have a grammar error: {{word}} on {{spellingType}} {{suggestions}}', {
+                        word: value,
+                        spellingType: spellingType,
+                        suggestions: suggestions
+                    });
+            }
         }
 
         function checkSpelling(aNode, value, spellingType) {
@@ -216,6 +232,10 @@ module.exports = {
         }
 
         function underscoreParser(aNode, value, spellingType) {
+            if (options.sentences) {
+                checkGrammar(aNode, value, `Sentence: ${spellingType}`);
+            }
+
             if (!options.enableUpperCaseUnderscoreCheck) {
                 checkSpelling(aNode, value, spellingType);
             } else {

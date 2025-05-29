@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "globals": "^13.0.0",
+    "gramma": "^1.6.0",
     "hunspell-spellchecker": "^1.0.2",
     "lodash": "^4.17.15",
     "synckit": "^0.11.6",
