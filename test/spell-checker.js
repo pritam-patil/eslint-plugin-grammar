@@ -100,6 +100,20 @@ ruleTester.run('spellcheck/spell-checker', rule, {
                 { message: 'You have a misspelled word: srting on Comment'}]
         },
         {
+            code: 'var ajhasd = \'liasdfuhn\' // this are apple srting dict',
+            options:[{strings: false, identifiers: false, sentences: true, skipWords: ['dict']}],
+            errors: [
+                { message: 'You have a grammar error:  this are apple srting dict on Sentence: Comment'},
+                { message: 'You have a misspelled word: srting on Comment'}]
+        },
+        {
+            code: 'var ajhasd = \'liasdfuhn\' // this are apple',
+            options:[{strings: false, identifiers: false, sentences: true, skipWords: ['dict']}],
+            errors: [
+                { message: 'You have a grammar error:  this are apple on Sentence: Comment'},
+            ]
+        },
+        {
             code: 'var a = \'liasdfuhn\' // tsih is a comment srting dict',
             options:[{comments: false, strings: true, skipWords: ['dict']}],
             errors: [

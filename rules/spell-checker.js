@@ -186,12 +186,12 @@ module.exports = {
         function checkGrammar(aNode, value, spellingType) {
             const { status, suggestions } = syncFn(value);
             if (suggestions.length > 0) {
+                console.log(`>> value ${value} result  ${JSON.stringify(suggestions)}`);
                 context.report(
                     aNode,
-                    'You have a grammar error: {{word}} on {{spellingType}} {{suggestions}}', {
+                    'You have a grammar error: {{word}} on {{spellingType}}', {
                         word: value,
-                        spellingType: spellingType,
-                        suggestions: suggestions
+                        spellingType: spellingType
                     });
             }
         }
