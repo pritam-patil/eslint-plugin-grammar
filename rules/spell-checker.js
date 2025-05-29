@@ -183,16 +183,29 @@ module.exports = {
             return !options.skipWords.has(aWord) && !spell.check(aWord);
         }
 
+        function generateGrammarSuggestion(match, value) {
+            const { offset, length, replacements = []} = match;
+            const valueLen = value.length;
+            const word = replacements[0].value;
+            
+            const newValue = value.slice(0, offset) + word + value.slice(offset+length, valueLen);
+            return newValue;
+        }
+
+
         function checkGrammar(aNode, value, spellingType) {
             const { status, suggestions } = syncFn(value);
             if (suggestions.length > 0) {
-                console.log(`>> value ${value} result  ${JSON.stringify(suggestions)}`);
-                context.report(
-                    aNode,
-                    'You have a grammar error: {{word}} on {{spellingType}}', {
-                        word: value,
-                        spellingType: spellingType
-                    });
+                suggestions.map(item => {
+                    const suggestion = generateGrammarSuggestion(item, value.trim());
+                    context.report(
+                        aNode,
+                        'You have a grammar error in "{{word}}". Hint: {{hint}}. Suggestion: {{suggestion}}', {
+                            word: value.trim(),
+                            hint: item.shortMessage,
+                            suggestion
+                        });
+                });
             }
         }
 

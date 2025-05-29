@@ -101,16 +101,16 @@ ruleTester.run('spellcheck/spell-checker', rule, {
         },
         {
             code: 'var ajhasd = \'liasdfuhn\' // this are apple srting dict',
-            options:[{strings: false, identifiers: false, sentences: true, skipWords: ['dict']}],
+            options:[{strings: false, identifiers: false, skipWords: ['dict']}],
             errors: [
-                { message: 'You have a grammar error:  this are apple srting dict on Sentence: Comment'},
                 { message: 'You have a misspelled word: srting on Comment'}]
         },
         {
             code: 'var ajhasd = \'liasdfuhn\' // this are apple',
             options:[{strings: false, identifiers: false, sentences: true, skipWords: ['dict']}],
             errors: [
-                { message: 'You have a grammar error:  this are apple on Sentence: Comment'},
+                { message: 'You have a grammar error in "this are apple". Hint: Grammatical problem: use ‘these’. Suggestion: these are apple'},
+                { message: 'You have a grammar error in "this are apple". Hint: Grammar error. Suggestion: this is apple'},
             ]
         },
         {
