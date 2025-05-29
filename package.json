@@ -1,18 +1,18 @@
 {
   "name": "eslint-plugin-spellcheck",
   "version": "0.0.21",
-  "description": "ESLint rules to spell check js files",
+  "description": "ESLint rules to spell check and grammar validation for js files",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/aotaduy/eslint-plugin-spellcheck.git"
+    "url": "https://github.com/pritam-patil/eslint-plugin-grammar.git"
   },
-  "author": "Andres Otaduy",
+  "author": "Pritam Patil",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/aotaduy/eslint-plugin-spellcheck/issues"
+    "url": "https://github.com/pritam-patil/eslint-plugin-grammar/issues"
   },
-  "homepage": "https://github.com/aotaduy/eslint-plugin-spellcheck",
+  "homepage": "https://github.com/pritam-patil/eslint-plugin-grammar",
   "scripts": {
     "test": "nyc mocha",
     "lint": "eslint -c .eslintrc.json rules/*.js"
@@ -22,8 +22,7 @@
     "gramma": "^1.6.0",
     "hunspell-spellchecker": "^1.0.2",
     "lodash": "^4.17.15",
-    "synckit": "^0.11.6",
-    "write-good": "^1.0.8"
+    "synckit": "^0.11.6"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -42,6 +41,8 @@
     "eslint",
     "eslintplugin",
     "spellcheck",
-    "spelling"
+    "spelling",
+    "gramma",
+    "grammar"
   ]
 }
