@@ -192,11 +192,6 @@ module.exports = {
       const newValue =
         value.slice(0, offset) + word + value.slice(offset + length, valueLen);
 
-      //   console.log(
-      //     `>> newValue ${newValue} value ${value} match`,
-      //     JSON.stringify(match)
-      //   );
-
       return newValue;
     }
 
