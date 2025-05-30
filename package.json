@@ -1,5 +1,5 @@
 {
-  "name": "eslint-plugin-spellcheck",
+  "name": "eslint-plugin-grammar",
   "version": "0.0.21",
   "description": "ESLint rules to spell check and grammar validation for js files",
   "main": "index.js",
