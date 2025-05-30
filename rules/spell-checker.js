@@ -173,6 +173,17 @@ module.exports = {
       return !options.skipWords.has(aWord) && !spell.check(aWord);
     }
 
+    function isValidSentence(str) {
+      if (typeof str !== "string") return false;
+
+      const trimmed = str.trim();
+
+      // Must contain at least one space (suggests more than one word)
+      const containsMultipleWords = /\s+/.test(trimmed);
+
+      return containsMultipleWords && str.trim() !== "";
+    }
+
     function generateGrammarSuggestion(match, value) {
       const { offset, length, replacements = [] } = match;
       const valueLen = value.length;
@@ -180,19 +191,31 @@ module.exports = {
 
       const newValue =
         value.slice(0, offset) + word + value.slice(offset + length, valueLen);
+
+      //   console.log(
+      //     `>> newValue ${newValue} value ${value} match`,
+      //     JSON.stringify(match)
+      //   );
+
       return newValue;
     }
 
     function checkGrammar(aNode, value, spellingType) {
-      const { status, suggestions } = syncFn(value);
+      if (!isValidSentence(value)) {
+        return false;
+      }
+
+      const trimmed = value.trim();
+
+      const { status, suggestions } = syncFn(trimmed);
       if (suggestions.length > 0) {
         suggestions.map((item) => {
-          const suggestion = generateGrammarSuggestion(item, value.trim());
+          const suggestion = generateGrammarSuggestion(item, trimmed);
           context.report(
             aNode,
             'You have a grammar error in "{{word}}". Hint: {{hint}}. Suggestion: {{suggestion}}',
             {
-              word: value.trim(),
+              word: trimmed,
               hint: item.shortMessage,
               suggestion,
             }

@@ -2,7 +2,7 @@
 var { runAsWorker } = require("synckit");
 var gramma = require("gramma");
 runAsWorker(async function (args) {
-  const result = await gramma.check("this are apple");
+  const result = await gramma.check(args);
 
   return {
     suggestions: result.matches,

@@ -133,6 +133,76 @@ ruleTester.run("spellcheck/spell-checker", rule, {
       errors: [{ message: "You have a misspelled word: liasdfuhn on String" }],
     },
     {
+      code: "var a = 'She go to school every day'",
+      options: [{ comments: false, strings: true, sentences: true }],
+      errors: [
+        {
+          message:
+            'You have a grammar error in "She go to school every day". Hint: Agreement error. Suggestion: She goes to school every day',
+        },
+      ],
+    },
+    {
+      code: 'var a = "I can playing piano very good."',
+      options: [{ comments: false, strings: true, sentences: true }],
+      errors: [
+        {
+          message:
+            'You have a grammar error in "I can playing piano very good.". Hint: Grammatical problem: use the base form. Suggestion: I can play piano very good.',
+        },
+      ],
+    },
+    {
+      code: 'var a = "They was happy to see us."',
+      options: [{ comments: false, strings: true, sentences: true }],
+      errors: [
+        {
+          message:
+            'You have a grammar error in "They was happy to see us.". Hint: Possible agreement error. Suggestion: They are happy to see us.',
+        },
+      ],
+    },
+    {
+      code: 'var a = "We going to the park tomorrow."',
+      options: [{ comments: false, strings: true, sentences: true }],
+      errors: [
+        {
+          message:
+            'You have a grammar error in "We going to the park tomorrow.". Hint: Agreement error. Suggestion: We\'re going to the park tomorrow.',
+        },
+      ],
+    },
+    {
+      code: 'var a = "He can sings very well."',
+      options: [{ comments: false, strings: true, sentences: true }],
+      errors: [
+        {
+          message:
+            'You have a grammar error in "He can sings very well.". Hint: Grammatical problem: use the base form. Suggestion: He can sing very well.',
+        },
+      ],
+    },
+    {
+      code: 'var a = "There is many cars on the road."',
+      options: [{ comments: false, strings: true, sentences: true }],
+      errors: [
+        {
+          message:
+            'You have a grammar error in "There is many cars on the road.". Hint: Possible agreement error. Suggestion: There are many cars on the road.',
+        },
+      ],
+    },
+    {
+      code: 'var a = "Me and my sister is happy."',
+      options: [{ comments: false, strings: true, sentences: true }],
+      errors: [
+        {
+          message:
+            'You have a grammar error in "Me and my sister is happy.". Hint: Possible incorrect pronoun. Suggestion: I and my sister is happy.',
+        },
+      ],
+    },
+    {
       code: "var a = 1 // tsih is a comment srting dict",
       options: [{ skipWords: ["dict"] }],
       errors: [
