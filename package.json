@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-grammar",
-  "version": "0.0.21",
+  "version": "0.1.0",
   "description": "ESLint rules to spell check and grammar validation for js files",
   "main": "index.js",
   "repository": {
