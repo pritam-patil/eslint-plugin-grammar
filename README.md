@@ -1,75 +1,82 @@
-# eslint-plugin-spellcheck
+# eslint-plugin-grammar
+
 [eslint](http://eslint.org) plugin to spell check words on identifiers, Strings and comments of javascript files.
-[![dependencies Status](https://david-dm.org/aotaduy/eslint-plugin-spellcheck/status.svg)](https://david-dm.org/aotaduy/eslint-plugin-spellcheck)
-[![Build CI](https://github.com/aotaduy/eslint-plugin-spellcheck/actions/workflows/node.js.yml/badge.svg)](https://github.com/aotaduy/eslint-plugin-spellcheck/actions/workflows/node.js.yml)
+
 ## Usage in a project
 
-1. Install `eslint-plugin-spellcheck` as a dev-dependency:
+1. Install `eslint-plugin-grammar` as a dev-dependency:
 
-    ```shell
-    npm install --save-dev eslint-plugin-spellcheck
-    ```
+   ```shell
+   npm install --save-dev eslint-plugin-grammar
+   ```
 
 2. Enable the plugin by adding it to your `.eslintrc`:
 
-    ```yaml
-    plugins:
-      - spellcheck
-    ```
-3. simplest configuration .eslintrc: 
+   ```yaml
+   plugins:
+     - spellcheck
+   ```
 
-    ```json
-    "plugins": [
-       "spellcheck"
+3. simplest configuration .eslintrc:
+
+   ```json
+   "plugins": [
+      "spellcheck"
    ],
    "rules": {
-       "spellcheck/spell-checker": ["warn"]
-    }
+      "spellcheck/spell-checker": ["warn"]
+   }
+
+   ```
 
 4. You can also configure these rules in your `.eslintrc`. All rules defined in this plugin have to be prefixed by 'spellcheck/'
 
-    ```json
-    "plugins": [
-       "spellcheck"
+   ```json
+   "plugins": [
+      "spellcheck"
    ],
    "rules": {
-       "spellcheck/spell-checker": [1,
-           {
-               "comments": true,
-               "strings": true,
-               "identifiers": true,
-               "templates": true,
-               "lang": "en_US",
-               "skipWords": [
-                   "dict",
-                   "aff",
-                   "hunspellchecker",
-                   "hunspell",
-                   "utils"
-               ],
-               "skipIfMatch": [
-                   "http://[^s]*",
-                   "^[-\\w]+\/[-\\w\\.]+$"
-               ],
-               "skipWordIfMatch": [
-                   "^foobar.*$"
-               ],
-               "minLength": 3
-            }
-        ]
-    }
-    ```
+      "spellcheck/spell-checker": [1,
+          {
+              "comments": true,
+              "strings": true,
+              "identifiers": true,
+              "templates": true,
+              "sentences": true,
+              "lang": "en_US",
+              "skipWords": [
+                  "dict",
+                  "aff",
+                  "hunspellchecker",
+                  "hunspell",
+                  "utils"
+              ],
+              "skipIfMatch": [
+                  "http://[^s]*",
+                  "^[-\\w]+\/[-\\w\\.]+$"
+              ],
+              "skipWordIfMatch": [
+                  "^foobar.*$"
+              ],
+              "minLength": 3
+           }
+       ]
+   }
+   ```
 
 ## Configuration Options
 
- This ESLint plugin, like others, can be reconfigured to produce errors (2), warnings (1), or disabled (0) with the first numeric argument.  For more information on ESLint configuration, see: http://eslint.org/docs/user-guide/configuring
+This ESLint plugin, like others, can be reconfigured to produce errors (2), warnings (1), or disabled (0) with the first numeric argument. For more information on ESLint configuration, see: http://eslint.org/docs/user-guide/configuring
 
-````
+```
 "comments": <<Boolean>> default: true
 Check Spelling inside comments
 
 "strings": <<Boolean>>, default: true
 Check Spelling inside strings
+
+"sentences": <<Boolean>>, default: true
+Check grammar inside strings and comments
 
 "identifiers": <<Boolean>>, default: true
 Check Spelling inside identifiers
@@ -103,52 +110,52 @@ i.e: "^[-\\w]+\/[-\\w\\.]+$" will ignore MIME types.
 
 "minLength": <<Number>> default: 1
 Words with a character-amount of less than the minLength will not be spell-checked.
-````
+```
 
 Check example below
 
-
 ## Usage globally
 
-1. Install `eslint-plugin-spellcheck` as a global package:
+1. Install `eslint-plugin-grammar` as a global package:
 
-    ```shell
-    npm install -g eslint-plugin-spellcheck
-    ```
+   ```shell
+   npm install -g eslint-plugin-grammar
+   ```
 
 2. Enable the plugin by adding it to your `eslint.json`:
 
-    ```json
-    "plugins": [
-       "spellcheck"
+   ```json
+   "plugins": [
+      "spellcheck"
    ],
    "rules": {
-       "spellcheck/spell-checker": [1,
-           {
-               "comments": true,
-               "strings": true,
-               "identifiers": true,
-               "lang": "en_US",
-               "skipWords": [
-                   "dict",
-                   "aff",
-                   "hunspellchecker",
-                   "hunspell",
-                   "utils"
-                ],
-                "skipIfMatch": [
-                    "http://[^s]*"
-                ],
-                "skipWordIfMatch": [
-                    "^foobar.*$"
-                ],
-                "minLength": 3
-            }
-        ]
+      "spellcheck/spell-checker": [1,
+          {
+              "comments": true,
+              "strings": true,
+              "identifiers": true,
+              "lang": "en_US",
+              "skipWords": [
+                  "dict",
+                  "aff",
+                  "hunspellchecker",
+                  "hunspell",
+                  "utils"
+               ],
+               "skipIfMatch": [
+                   "http://[^s]*"
+               ],
+               "skipWordIfMatch": [
+                   "^foobar.*$"
+               ],
+               "minLength": 3
+           }
+       ]
    }
-    ```
+   ```
 
 ## Skipping words ending with a number
+
 To skip words like md5, sha1 and sha256, add to `skipWords` the root of the word, that is, without the number:
 
 ```json
@@ -164,4 +171,4 @@ To skip words like md5, sha1 and sha256, add to `skipWords` the root of the word
 }
 ```
 
-Please contact me with any issues on github or check my blog (spanish) [Area 204](https://aotaduy.github.io/area204/)
+Please contact me with any issues on github.
