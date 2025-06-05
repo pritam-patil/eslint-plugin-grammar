@@ -174,14 +174,16 @@ module.exports = {
     }
 
     function isValidSentence(str) {
-      if (typeof str !== "string") return false;
-
       const trimmed = str.trim();
 
-      // Must contain at least one space (suggests more than one word)
-      const containsMultipleWords = /\s+/.test(trimmed);
+      // Basic checks
+      if (trimmed.length === 0) return false;
 
-      return containsMultipleWords && str.trim() !== "";
+      const startsWithCapital = /^[A-Z]/.test(trimmed);
+      const endsWithPunctuation = /[.!?]$/.test(trimmed);
+      const hasWords = /\b\w+\b/.test(trimmed);
+
+      return startsWithCapital && endsWithPunctuation && hasWords;
     }
 
     function generateGrammarSuggestion(match, value) {
@@ -196,9 +198,13 @@ module.exports = {
     }
 
     function checkGrammar(aNode, value, spellingType) {
-      if (!isValidSentence(value)) {
+      const isSentence = isValidSentence(value);
+      if (!isSentence) {
         return false;
       }
+
+      // TODO: debug mode
+      // console.log('checkGrammar', value, isSentence);
 
       const trimmed = value.trim();
 
