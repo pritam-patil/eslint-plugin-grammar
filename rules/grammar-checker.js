@@ -41,7 +41,6 @@ function getGloabalsSkipsWords() {
 const create = {
   create(context) {
     const options = lodash.assign(defaultOptions, context.options[0]);
-    // console.log(`>> options`, {s: options.strings, c: options.comments, i: options.identifiers, t: options.templates, sent: options.sentences});
     const lang = options.lang || "en_US";
 
     function initializeDictionary(language) {
@@ -125,7 +124,6 @@ const create = {
     };
 
     function checkComment(aNode) {
-      // console.log(`>> checkComment`, {aNode});
       if (options.comments) {
         underscoreParser(aNode, aNode.value, "Comment");
       }
@@ -133,7 +131,6 @@ const create = {
 
     const checkGrammar = (aNode, value, spellingType) => {
       const isSentence = isValidSentence(value);
-      console.info("checkGrammar", value, isSentence);
 
       if (!isSentence) {
         return false;
@@ -166,7 +163,6 @@ const create = {
     };
 
     const underscoreParser = (aNode, value, spellingType) => {
-      // console.log(`>> underscoreParser`, {aNode, value, spellingType});
       if (options.sentences) {
         checkGrammar(aNode, value, `Sentence: ${spellingType}`);
       }
@@ -240,7 +236,6 @@ const create = {
     };
 
     const checkLiteral = (aNode) => {
-      // console.log(`>> checkLiteral`, {aNode});
       if (
         options.strings &&
         typeof aNode.value === "string" &&
@@ -252,7 +247,6 @@ const create = {
 
     const checkIdentifier = (aNode) => {
       if (options.identifiers) {
-        // console.log(`>> checkIdentifier`, {aNode});
         underscoreParser(aNode, aNode.name, "Identifier");
       }
     };
