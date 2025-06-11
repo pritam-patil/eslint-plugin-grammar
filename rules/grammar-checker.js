@@ -4,8 +4,10 @@ const lodash = require("lodash");
 const Spellchecker = require("hunspell-spellchecker");
 const globals = require("globals");
 const defaultSettings = require("./defaultSettings");
+const { createSyncFn } = require("synckit");
 
 const spell = new Spellchecker();
+const grammarChecker = createSyncFn(require.resolve("./worker"));
 const defaultOptions = {
   langDir: defaultSettings.langDir,
   comments: true,
@@ -39,6 +41,7 @@ function getGloabalsSkipsWords() {
 const create = {
   create(context) {
     const options = lodash.assign(defaultOptions, context.options[0]);
+    // console.log(`>> options`, {s: options.strings, c: options.comments, i: options.identifiers, t: options.templates, sent: options.sentences});
     const lang = options.lang || "en_US";
 
     function initializeDictionary(language) {
@@ -97,13 +100,77 @@ const create = {
       return true;
     }
 
+    const isValidSentence = (str) => {
+      const trimmed = str.trim();
+
+      // Basic checks
+      if (trimmed.length === 0) return false;
+
+      const startsWithCapital = /^[A-Z]/.test(trimmed);
+      const endsWithPunctuation = /[.!?]$/.test(trimmed);
+      const hasWords = /\b\w+\b/.test(trimmed);
+
+      return startsWithCapital && endsWithPunctuation && hasWords;
+    };
+
+    const generateGrammarSuggestion = (match, value) => {
+      const { offset, length, replacements = [] } = match;
+      const valueLen = value.length;
+      const word = replacements[0].value;
+
+      const newValue =
+        value.slice(0, offset) + word + value.slice(offset + length, valueLen);
+
+      return newValue;
+    };
+
     function checkComment(aNode) {
+      // console.log(`>> checkComment`, {aNode});
       if (options.comments) {
         underscoreParser(aNode, aNode.value, "Comment");
       }
     }
 
+    const checkGrammar = (aNode, value, spellingType) => {
+      const isSentence = isValidSentence(value);
+      console.info("checkGrammar", value, isSentence);
+
+      if (!isSentence) {
+        return false;
+      }
+
+      if (options.debug) {
+        console.info("checkGrammar", value, isSentence);
+      }
+
+      const trimmed = value.trim();
+
+      const { status, suggestions } = grammarChecker(trimmed);
+      if (suggestions.length > 0) {
+        if (options.debug) {
+          console.info(`Found ${suggestions.length} suggestions`);
+        }
+        suggestions.map((item) => {
+          const suggestion = generateGrammarSuggestion(item, trimmed);
+          context.report(
+            aNode,
+            'You have a grammar error in "{{word}}". Hint: {{hint}}. Suggestion: {{suggestion}}',
+            {
+              word: trimmed,
+              hint: item.shortMessage,
+              suggestion,
+            }
+          );
+        });
+      }
+    };
+
     const underscoreParser = (aNode, value, spellingType) => {
+      // console.log(`>> underscoreParser`, {aNode, value, spellingType});
+      if (options.sentences) {
+        checkGrammar(aNode, value, `Sentence: ${spellingType}`);
+      }
+
       if (!options.enableUpperCaseUnderscoreCheck) {
         checkSpelling(aNode, value, spellingType);
       } else {
@@ -173,6 +240,7 @@ const create = {
     };
 
     const checkLiteral = (aNode) => {
+      // console.log(`>> checkLiteral`, {aNode});
       if (
         options.strings &&
         typeof aNode.value === "string" &&
@@ -184,6 +252,7 @@ const create = {
 
     const checkIdentifier = (aNode) => {
       if (options.identifiers) {
+        // console.log(`>> checkIdentifier`, {aNode});
         underscoreParser(aNode, aNode.name, "Identifier");
       }
     };
