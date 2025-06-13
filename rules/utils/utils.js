@@ -34,8 +34,17 @@ const lodash = require("lodash");
   return true;
 }
 
+function shouldSkipSuggestion(options, suggestion) {
+  const {word} = suggestion;
+  const result = hasToSkip(options.dictionary, options.skipIfMatch, word.toLowerCase());
+
+  return result;
+}
+
 module.exports = {
   hasToSkip,
   isValidSentence,
   skipWordIfMatch,
+  shouldSkipSuggestion
 };
+

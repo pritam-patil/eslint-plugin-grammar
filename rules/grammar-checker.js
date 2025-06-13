@@ -115,7 +115,8 @@ const create = {
 
       const grammarOptions = {
         language: options.lang.replace("_", "-"), // translate from en_US to en-US
-        dictionary: [...options.skipWords],
+        dictionary: options.skipWords,
+        skipIfMatch: options.skipIfMatch
       };
 
       const { status, suggestions } = grammarChecker(trimmed, grammarOptions);
