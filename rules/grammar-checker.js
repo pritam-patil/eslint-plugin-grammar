@@ -5,6 +5,7 @@ const Spellchecker = require("hunspell-spellchecker");
 const globals = require("globals");
 const defaultSettings = require("./defaultSettings");
 const { createSyncFn } = require("synckit");
+const { hasToSkip, isValidSentence, skipWordIfMatch } = require("./utils/utils");
 
 const spell = new Spellchecker();
 const grammarChecker = createSyncFn(require.resolve("./worker"));
@@ -69,15 +70,6 @@ const create = {
       defaultSettings.skipIfMatch
     );
 
-    const hasToSkip = (value) => {
-      return (
-        options.skipWords?.has?.(value) ||
-        lodash.find(options.skipIfMatch, function (aPattern) {
-          return value.match(aPattern);
-        })
-      );
-    };
-
     const isSpellingError = (aWord) => {
       return !options.skipWords?.has?.(aWord) && !spell.check(aWord);
     };
@@ -88,29 +80,8 @@ const create = {
      * @return {Boolean} false if skip; true if not
      */
     function hasToSkipWord(word) {
-      if (word.length < options.minLength) return false;
-      if (
-        lodash.find(options.skipWordIfMatch, function (aPattern) {
-          return word.match(aPattern);
-        })
-      ) {
-        return false;
-      }
-      return true;
+      return skipWordIfMatch(options, word);
     }
-
-    const isValidSentence = (str) => {
-      const trimmed = str.trim();
-
-      // Basic checks
-      if (trimmed.length === 0) return false;
-
-      const startsWithCapital = /^[A-Z]/.test(trimmed);
-      const endsWithPunctuation = /[.!?]$/.test(trimmed);
-      const hasWords = /\b\w+\b/.test(trimmed);
-
-      return startsWithCapital && endsWithPunctuation && hasWords;
-    };
 
     const generateGrammarSuggestion = (match, value) => {
       const { offset, length, replacements = [] } = match;
@@ -142,7 +113,12 @@ const create = {
 
       const trimmed = value.trim();
 
-      const { status, suggestions } = grammarChecker(trimmed);
+      const grammarOptions = {
+        language: options.lang.replace("_", "-"), // translate from en_US to en-US
+        dictionary: [...options.skipWords],
+      };
+
+      const { status, suggestions } = grammarChecker(trimmed, grammarOptions);
       if (suggestions.length > 0) {
         if (options.debug) {
           console.info(`Found ${suggestions.length} suggestions`);
@@ -178,7 +154,7 @@ const create = {
     };
 
     const checkSpelling = (aNode, value, spellingType) => {
-      if (!hasToSkip(value)) {
+      if (!hasToSkip(options.skipWords, options.skipIfMatch, value)) {
         // Regular expression matches regexp metacharacters, and any special char
         var regexp =
             /(\\[sSwdDB0nfrtv])|\\[0-7][0-7][0-7]|\\x[0-9A-F][0-9A-F]|\\u[0-9A-F][0-9A-F][0-9A-F][0-9A-F]|[^0-9a-zA-Z '’]/g,
