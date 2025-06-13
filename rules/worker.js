@@ -1,11 +1,16 @@
 // worker.js
 var { runAsWorker } = require("synckit");
 var gramma = require("gramma");
-runAsWorker(async function (args) {
-  const result = await gramma.check(args);
+var { shouldSkipSuggestion } = require("./utils/utils");
+
+runAsWorker(async function (args, options) {
+  const result = await gramma.check(args, {
+    ...options,
+    dictionary: [...options.dictionary],
+  });
 
   return {
-    suggestions: result.matches,
+    suggestions: result.matches.filter((match) => !shouldSkipSuggestion(options, match)),
     status: result.matches.length > 0 ? "error" : "ok",
   };
 });
