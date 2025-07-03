@@ -15,6 +15,7 @@ const defaultOptions = {
   strings: true,
   sentences: false,
   debug: false,
+  confidence: 0.1,
   identifiers: true,
   templates: true,
   skipWords: [],
@@ -116,7 +117,8 @@ const create = {
       const grammarOptions = {
         language: options.lang.replace("_", "-"), // translate from en_US to en-US
         dictionary: options.skipWords,
-        skipIfMatch: options.skipIfMatch
+        skipIfMatch: options.skipIfMatch,
+        confidence: options.confidence,
       };
 
       const { status, suggestions } = grammarChecker(trimmed, grammarOptions);
@@ -128,11 +130,12 @@ const create = {
           const suggestion = generateGrammarSuggestion(item, trimmed);
           context.report(
             aNode,
-            'You have a grammar error in "{{word}}". Hint: {{hint}}. Suggestion: {{suggestion}}',
+            'You have a grammar error in "{{word}}". Hint: {{hint}}. Suggestion: {{suggestion}}. Confidence: {{confidence}}',
             {
               word: trimmed,
               hint: item.shortMessage,
               suggestion,
+              confidence: item.rule.confidence,
             }
           );
         });
