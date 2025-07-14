@@ -10,7 +10,9 @@ runAsWorker(async function (args, options) {
   });
 
   return {
-    suggestions: result.matches.filter((match) => !shouldSkipSuggestion(options, match)).filter((match) => match.rule.confidence >= options.confidence),
+    suggestions: result.matches
+      .filter((match) => !shouldSkipSuggestion(options, match))
+      .filter((match) => match.rule.confidence >= options.confidence),
     status: result.matches.length > 0 ? "error" : "ok",
   };
 });

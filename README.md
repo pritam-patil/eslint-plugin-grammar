@@ -64,12 +64,15 @@ In your ESLint config (`.eslintrc` or `eslint.config.js`):
 | `sentences`                   | Boolean   | `false`   | Enable sentence-level grammar checking |
 | `ignoreRequire`               | Boolean   | `false`   | Skip `require()` calls |
 | `enableUpperCaseUnderscoreCheck` | Boolean | `false`   | Skip UPPER_CASE identifiers |
+| `enablePascalCase`            | Boolean   | `false`   | Skip PascalCase identifiers |
 | `lang`                        | String    | `"en_US"` | Supported: `en_US`, `en_CA`, `en_AU`, `en_GB` |
 | `langDir`                     | String    | `""`      | Path to custom dictionary files |
 | `skipWords`                   | String[]  | `[]`      | Words to ignore |
 | `skipIfMatch`                 | RegExp[]  | `[]`      | Skip entire node if matched |
 | `skipWordIfMatch`             | RegExp[]  | `[]`      | Skip individual words if matched |
 | `minLength`                   | Number    | `1`       | Ignore words shorter than this length |
+| `debug`                       | Boolean   | `false`   | Enable debug logging |
+| `confidence`                  | Number    | `0.1`     | Minimum confidence threshold for grammar suggestions |
 
 ## Skipping Numeric Suffixes
 

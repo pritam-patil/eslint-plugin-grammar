@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-grammar",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "EsLint plugin to catch grammar and spelling errors early in development",
   "main": "index.js",
   "repository": "https://github.com/pritam-patil/eslint-plugin-grammar.git",
