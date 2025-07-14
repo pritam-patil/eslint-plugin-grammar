@@ -9,6 +9,10 @@ const lodash = require("lodash");
   );
 };
 
+const isPascalCase = (str) => {
+  return /^[A-Z][a-zA-Z0-9]*$/.test(str);
+}
+
  const isValidSentence = (str) => {
   const trimmed = str.trim();
 
@@ -36,7 +40,7 @@ const lodash = require("lodash");
 
 function shouldSkipSuggestion(options, suggestion) {
   const {word} = suggestion;
-  const result = hasToSkip(options.dictionary, options.skipIfMatch, word.toLowerCase());
+  const result = hasToSkip(options.dictionary, options.skipIfMatch, word.toLowerCase()) || (options.enablePascalCase && isPascalCase(word));
 
   return result;
 }

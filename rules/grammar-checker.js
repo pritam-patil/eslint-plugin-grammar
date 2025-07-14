@@ -16,6 +16,7 @@ const defaultOptions = {
   sentences: false,
   debug: false,
   confidence: 0.1,
+  enablePascalCase: false,
   identifiers: true,
   templates: true,
   skipWords: [],
@@ -119,6 +120,7 @@ const create = {
         dictionary: options.skipWords,
         skipIfMatch: options.skipIfMatch,
         confidence: options.confidence,
+        enablePascalCase: options.enablePascalCase,
       };
 
       const { status, suggestions } = grammarChecker(trimmed, grammarOptions);
@@ -130,12 +132,13 @@ const create = {
           const suggestion = generateGrammarSuggestion(item, trimmed);
           context.report(
             aNode,
-            'You have a grammar error in "{{word}}". Hint: {{hint}}. Suggestion: {{suggestion}}. Confidence: {{confidence}}',
+            'Current "{{word}}" \n Suggested: {{suggestion}}. \n\nHint: {{hint}}. Confidence: {{confidence}} Log {{log}}',
             {
               word: trimmed,
               hint: item.shortMessage,
               suggestion,
               confidence: item.rule.confidence,
+              log: JSON.stringify(item),
             }
           );
         });
