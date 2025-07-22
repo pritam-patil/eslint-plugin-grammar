@@ -6,7 +6,7 @@ const plugin = {
   },
   rules: {
     "grammar-check": require("./rules/grammar-checker"),
-    "grammar/microsoft-style": require("./rules/ms-writing-style-checker"),
+    "microsoft-writing-style": require("./rules/ms-writing-style-checker"),
   },
 };
 

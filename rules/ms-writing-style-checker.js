@@ -618,14 +618,8 @@ module.exports = {
 
     return {
       Literal: checkLiteral,
-      TemplateElement: () => {
-        console.log("TemplateElement", node);
-      },
-      JSXText: () => {
-        console.log("JSXText", node);
-      },
-      // TemplateElement: checkNode,
-      // JSXText: checkNode,
+      TemplateElement: checkNode,
+      JSXText: checkNode,
       Program(node) {
         if (!options.comments) return;
 
