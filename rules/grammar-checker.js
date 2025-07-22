@@ -5,9 +5,13 @@ const Spellchecker = require("hunspell-spellchecker");
 const globals = require("globals");
 const defaultSettings = require("./defaultSettings");
 const { createSyncFn } = require("synckit");
-const { hasToSkip, isValidSentence, skipWordIfMatch } = require("./utils/utils");
-
+const {
+  hasToSkip,
+  isValidSentence,
+  skipWordIfMatch,
+} = require("./utils/utils");
 const spell = new Spellchecker();
+
 const grammarChecker = createSyncFn(require.resolve("./worker"));
 const defaultOptions = {
   langDir: defaultSettings.langDir,
@@ -132,13 +136,12 @@ const create = {
           const suggestion = generateGrammarSuggestion(item, trimmed);
           context.report(
             aNode,
-            'Current "{{word}}" \n Suggested: {{suggestion}}. \n\nHint: {{hint}}. Confidence: {{confidence}} Log {{log}}',
+            'Current "{{word}}" \n Suggested: {{suggestion}}. \n\nHint: {{hint}}. Confidence: {{confidence}}',
             {
               word: trimmed,
               hint: item.shortMessage,
               suggestion,
               confidence: item.rule.confidence,
-              log: JSON.stringify(item),
             }
           );
         });
