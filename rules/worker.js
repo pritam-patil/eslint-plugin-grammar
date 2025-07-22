@@ -1,10 +1,10 @@
 // worker.js
 var { runAsWorker } = require("synckit");
-var gramma = require("gramma");
+var grammarChecker = require("gramma-lite");
 var { shouldSkipSuggestion } = require("./utils/utils");
 
 runAsWorker(async function (args, options) {
-  const result = await gramma.check(args, {
+  const result = await grammarChecker(args, {
     ...options,
     dictionary: [...options.dictionary],
   });
