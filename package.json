@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-grammar",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "EsLint plugin to catch grammar and spelling errors early in development",
   "main": "index.js",
   "repository": "https://github.com/pritam-patil/eslint-plugin-grammar.git",
@@ -9,8 +9,11 @@
   "devDependencies": {
     "eslint": "^9.28.0"
   },
+  "scripts": {
+    "server": "yes | gramma-lite server install"
+  },
   "dependencies": {
-    "gramma-lite": "1.0.0",
+    "gramma-lite": "1.0.4",
     "hunspell-spellchecker": "^1.0.2",
     "lodash": "^4.17.21",
     "synckit": "^0.11.8",
